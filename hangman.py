@@ -67,28 +67,32 @@ class Hangman():
 
     # sequence of having user input a guess/guesses and then processing it for adding to guessed dict
     def guess(self):
-        current_guess = input('\nWhat is your guess?\nLetter(s) only. No numbers, special characters, or spaces.\n').lower()
-        for n in current_guess:
-            if not n.isalpha():
-                print("\nYou've entered something invalid. Please try again.")
-                return 'Invalid'
+        if self.mistakes_left == 0:
+            print('\nOops! Looks like you have used up all your guesses.')
+            return 'Out'
 
-        current_guess = list(set(current_guess))
+        else:
+            current_guess = input('\nWhat is your guess?\nLetter(s) only. No numbers, special characters, or spaces.\n').lower()
+            for n in current_guess:
+                if not n.isalpha():
+                    print("\nYou've entered something invalid. Please try again.")
+                    return 'Invalid'
 
-        for n in current_guess:
-            if n in self.guessed:
-                print(f'\nThe letter "{n}" was already guessed previously.')
-            else:
-                self.update()
-                if self.mistakes_left > 0:
-                    print(f'\nGuessing "{n}"...')
-                    self.guessed.append(n)
+            current_guess = list(set(current_guess))
 
-                # will only happen if a guess with multiple incorrect letters is made with only 1 guess left
-                # as soon as mistakes_left is 0, driver() will break its loop
+            for n in current_guess:
+                if n in self.guessed:
+                    print(f'\nThe letter "{n}" was already guessed previously.')
                 else:
-                    print(f'\nOops! Looks like you have used up all your guesses.\nThe letter "{n}" was not guessed.')
-                    break
+                    self.update()
+                    if self.mistakes_left == 0:
+                        print(f'\nOops! Looks like you have used up all your guesses.\nThe letter "{n}" was not guessed.')
+                        break
+
+                    else:
+                        print(f'\nGuessing "{n}"...')
+                        self.guessed.append(n)
+                
             
            
 def driver():

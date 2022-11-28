@@ -60,6 +60,17 @@ class HangTest(unittest.TestCase):
         self.assertEqual(hangtest.mistakes_left, 6)
         self.assertEqual(hangtest.board_str, 't _ _ t ')
 
+    # trying to guess with 0 guesses left
+    @patch('builtins.input', return_value='ta')
+    def test_guess_semi_valid(self, input):
+        hangtest.__init__()
+        hangtest.board = {}
+        hangtest.guessed = ['x', 'y', 'z', 'q', 'w', 'v']
+        hangtest.fill_board('test', hangtest.board)
+        self.assertEqual(len(hangtest.board), 4)
+        self.assertEqual(len(hangtest.guessed), 6)
+        self.assertEqual(hangtest.guess(), 'Out')
+
     # semi-working case that tries 3 guesses at once when there is only 1 guess left
     @patch('builtins.input', return_value='dan')
     def test_guess_semi_valid(self, input):
